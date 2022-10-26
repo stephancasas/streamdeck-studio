@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Geo';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/Geo-Regular.ttf') format('ttf'),
+    url('../fonts/Geo-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/VT323-Regular.ttf') format('ttf'),
+    url('../fonts/VT323-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/Silkscreen-Regular.ttf') format('ttf'),
+    url('../fonts/Silkscreen-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/PressStart2P-Regular.ttf') format('ttf'),
+    url('../fonts/PressStart2P-Regular.woff2') format('woff2');
+}
