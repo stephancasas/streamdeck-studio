@@ -1,0 +1,107 @@
+version: "3.6"
+services:
+  mysql:
+    container_name: mysql
+    restart: unless-stopped
+    image: 'mysql/mysql-server:8.0'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'mysql:/var/lib/mysql'
+  redis:
+    container_name: redis
+    restart: unless-stopped
+    image: 'redis:alpine3.16'
+    volumes:
+      - 'redis:/data'
+  app:
+    restart: unless-stopped
+    container_name: app
+    depends_on:
+      - mysql
+      - redis
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: php_app
+      args:
+        - WEB_ROOT=${WEB_ROOT:-/var/www/html}
+        - SSH_USER=${SSH_USER}
+        - SSH_PASSWORD=${SSH_PASSWORD}
+    working_dir: ${WEB_ROOT:-/var/www/html}
+    ports:
+      - '${SSH_PORT:-2222}:22'
+    volumes:
+      - '.:${WEB_ROOT:-/var/www/html}'
+      - './docker/php/conf/www.conf:/usr/local/etc/php-fpm.d/www.conf'
+      - './docker/php/conf/supervisord.app.conf:/etc/supervisord.conf'
+    environment:
+      - WEB_ROOT=${WEB_ROOT:-/var/www/html}
+      - APP_KEY='${APP_KEY}'
+  worker:
+    restart: unless-stopped
+    container_name: worker
+    depends_on:
+      - app
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: php_worker
+      args:
+        - WEB_ROOT=${WEB_ROOT:-/var/www/html}
+    working_dir: ${WEB_ROOT:-/var/www/html}
+    volumes:
+      - '.:${WEB_ROOT:-/var/www/html}'
+      - './docker/php/conf/www.conf:/usr/local/etc/php-fpm.d/www.conf'
+      - './docker/php/conf/supervisord.worker.conf:/etc/supervisord.conf'
+    environment:
+      - WEB_ROOT=${WEB_ROOT}
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    depends_on:
+      - app
+    ports:
+      - '${HTTP_PORT:-80}:80'
+      - '${HTTPS_PORT:-443}:443'
+    volumes:
+      - '.:${WEB_ROOT:-/var/www/html}'
+      - './docker/certbot/letsencrypt:/etc/cert'
+      - './docker/nginx/conf:/etc/nginx/templates'
+      - './docker/nginx/scripts/opt:/opt/scripts'
+      - './docker/nginx/scripts/docker-entrypoint.d/11-mount-config.sh:/docker-entrypoint.d/11-mount-config.sh'
+      - './docker/nginx/scripts/docker-entrypoint.d/31-listen-cert-reload.sh:/docker-entrypoint.d/31-listen-cert-reload.sh'
+    environment:
+      - WEB_ROOT=${WEB_ROOT:-/var/www/html}
+      - APP_HOSTNAME=${APP_HOSTNAME}
+  certbot:
+    build:
+      context: .
+      dockerfile: docker/certbot/Dockerfile
+    restart: unless-stopped
+    container_name: certbot
+    volumes:
+      - './docker/certbot/letsencrypt:/etc/letsencrypt'
+      - ./docker/certbot/scripts:/opt/scripts
+      - '.:${WEB_ROOT:-/var/www/html}'
+    depends_on:
+      - nginx
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+      - WEB_ROOT=${WEB_ROOT:-/var/www/html}
+      - APP_HOSTNAME=${APP_HOSTNAME}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
