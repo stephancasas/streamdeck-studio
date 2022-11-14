@@ -19,7 +19,7 @@
 
         <div class="absolute right-0 inset-y-0 w-[50px] flex items-center px-2"
              x-show="query" x-transition.scale.60 @click="query = ''; $wire.call('search', query)">
-            <div class="inset-button-theme h-4 w-4 mx-auto">
+            <div class="inset-button-theme w-4 mx-auto">
                 @fontawesome('circle-xmark')
             </div>
         </div>
