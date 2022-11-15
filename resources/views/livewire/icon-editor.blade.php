@@ -33,7 +33,7 @@
     </div>
 
     {{-- Icon Preview --}}
-    <div class="m-16">
+    <div class="m-16 z-10">
 
         {{-- visibility restored in icon-editor.js -- see note --}}
         <div id="icon-canvas-aggregate" class="relative transition-all opacity-0 translate-y-2">
@@ -107,7 +107,7 @@
     </div>
 
     {{-- Options --}}
-    <div class="px-4 pt-2 pb-3 border-t border-b border-theme">
+    <div class="px-4 pt-2 pb-3 border-t border-b border-theme z-20">
 
         {{-- Label Display --}}
         <div class="grid grid-cols-2 gap-x-2">
