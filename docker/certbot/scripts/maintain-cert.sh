@@ -13,6 +13,7 @@ fi
 
 certbot certonly ${CERTBOT_PROD} \
     --domain "${APP_HOSTNAME}" \
+    --domain "www.${APP_HOSTNAME}" \
     --email "${CERTBOT_EMAIL}" \
     --webroot --webroot-path="${WEB_ROOT}/public" \
     --keep-until-expiring --agree-tos --no-eff-email \

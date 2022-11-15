@@ -30,6 +30,21 @@ else # rebuild assets if stale
 
 fi
 
+if [ ! -d "$WEB_ROOT/vendor"]; then
+    echo "Installing Composer packages..." &&
+        composer install >/dev/null
+
+else # update packages if stale
+
+    VENDOR_DIR="$WEB_ROOT/vendor"
+    VENDOR_EXPIRY=604800 # one week
+
+    [ $(($(date +%s) - $(date -r $VENDOR_DIR +%s))) -gt $BUILD_EXPIRY ] &&
+        echo "Composer packages are stale. Updating..." &&
+        composer install >/dev/null
+
+fi
+
 echo "Updating database schema..." &&
     php artisan migrate --force >/dev/null
 

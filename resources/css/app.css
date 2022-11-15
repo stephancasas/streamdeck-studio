@@ -41,7 +41,7 @@ input.no-focus {
   font-family: 'Geo';
 }
 
-a[href] {
+.link {
   @apply text-sky-500 dark:text-sky-400;
 }
 

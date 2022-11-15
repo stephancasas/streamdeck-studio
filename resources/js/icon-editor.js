@@ -19,8 +19,9 @@ export default function () {
       debounce = setTimeout(renderIconToImage, 500);
     };
 
-    // label is wire-deferred
+    // label and labelVisibility are wire-deferred
     $watch('label', debounced);
+    $watch('labelVisibility', debounced);
 
     // all other props listen to livewire
     $wire.on('icon-did-update', debounced);
