@@ -28,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-      target: php_app
+      target: php-app
       args:
         - WEB_ROOT=${WEB_ROOT:-/var/www/html}
         - SSH_USER=${SSH_USER}
@@ -51,7 +51,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-      target: php_worker
+      target: php-worker
       args:
         - WEB_ROOT=${WEB_ROOT:-/var/www/html}
     working_dir: ${WEB_ROOT:-/var/www/html}
