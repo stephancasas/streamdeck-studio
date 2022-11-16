@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Base PHP Image
 # ------------------------------------------------------------------------------
-FROM php:8.1.12-fpm-alpine AS php_base
+FROM php:8.1.12-fpm-alpine AS php-base
 
 # set www dir
 ARG WEB_ROOT='/var/www/html'
@@ -34,20 +34,23 @@ EXPOSE 9000
 # ------------------------------------------------------------------------------
 # App Image
 # ------------------------------------------------------------------------------
-FROM php_base AS php_app
+FROM php-base AS php-app
 
 ARG WEB_ROOT
 
 # does this container use ssh?
 ARG SSH_USER
-ARG SSH_PASSWORD
+ARG SSH_PASS
 
 # install openssh
-RUN [ ! -z "$SSH_USER" ] && apk add --update openssh-server \
-    && ssh-keygen -A \
-    && echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config \
-    && adduser -h "/home/$SSH_USER" -s /bin/sh -D -G www-data "$SSH_USER" \
-    && echo -n "$SSH_USER:$SSH_PASSWORD" | chpasswd \
+RUN [ ! -z "$SSH_USER" ] && apk add --no-cache \
+    openssh-server-pam openssh-sftp-server && \
+    ln -s /usr/sbin/sshd.pam /usr/sbin/sshd && \
+    mkdir -p /var/run/sshd && \
+    ssh-keygen -A && \
+    adduser -h "/home/$SSH_USER" -s /bin/ash -D -G www-data "$SSH_USER" && \
+    echo -n "$SSH_USER:$SSH_PASS" | chpasswd && \
+    echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config \
     || echo "Skipping OpenSSH install."
 
 # install nodejs/npm
@@ -60,7 +63,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # ------------------------------------------------------------------------------
 # Worker Image
 # ------------------------------------------------------------------------------
-FROM php_base AS php_worker
+FROM php-base AS php-worker
 
 # install cron with laravel task scheduler
 RUN apk add --update apk-cron \

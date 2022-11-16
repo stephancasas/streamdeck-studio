@@ -30,7 +30,7 @@ else # rebuild assets if stale
 
 fi
 
-if [ ! -d "$WEB_ROOT/vendor"]; then
+if [ ! -d "$WEB_ROOT/vendor" ]; then
     echo "Installing Composer packages..." &&
         composer install >/dev/null
 
