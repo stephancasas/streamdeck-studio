@@ -17,7 +17,9 @@
     @livewireScripts
     @wireUiScripts
     @vite(['resources/js/app.js'])
-    
+    @include('popper::assets')
+
+
     {{-- FontAwesome Fallback --}}
     <script src="https://kit.fontawesome.com/e2a87f9a11.js" crossorigin="anonymous"></script>
 
