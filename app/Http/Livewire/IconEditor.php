@@ -32,6 +32,8 @@ class IconEditor extends Component
 
     public string $canvasColorLabel;
 
+    public bool $useAdvancedColorUi = false;
+
     public $colorScheme =
     'Canvas should be darker than glyph by 2 shades';
 
@@ -81,7 +83,7 @@ class IconEditor extends Component
             $this->glyph = FontAwesomeGlyph::find($glyphId);
         }
 
-        if (! $this->userModifiedLabel) {
+        if (!$this->userModifiedLabel) {
             $this->label = (string) Str::of($this->glyph->id)
                 ->headline()
                 ->words(2, '')
@@ -103,7 +105,9 @@ class IconEditor extends Component
             $this->{$prop} = $value;
         }
 
-        $this->useColorScheme($prop, $value);
+        if (!$this->useAdvancedColorUi) {
+            $this->useColorScheme($prop, $value);
+        }
 
         if ($prop !== 'label') {
             $this->setColorLabels();
@@ -165,7 +169,7 @@ class IconEditor extends Component
             return;
         }
 
-        if ((! Str::endsWith($changed, 'Color')) || Str::startsWith($changed, 'label')) {
+        if ((!Str::endsWith($changed, 'Color')) || Str::startsWith($changed, 'label')) {
             return;
         }
 
@@ -179,7 +183,7 @@ class IconEditor extends Component
         $darker = (string) Str::of($this->colorScheme)
             ->words(1, '')
             ->trim()
-            ->lower().'Color';
+            ->lower() . 'Color';
 
         $brighter = 'canvasColor';
         if ($darker === 'canvasColor') {

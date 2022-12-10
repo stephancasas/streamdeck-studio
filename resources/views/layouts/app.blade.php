@@ -17,7 +17,7 @@
     @livewireScripts
     @wireUiScripts
     @vite(['resources/js/app.js'])
-    
+
     {{-- FontAwesome Fallback --}}
     <script src="https://kit.fontawesome.com/e2a87f9a11.js" crossorigin="anonymous"></script>
 
