@@ -13,11 +13,8 @@
             'flex items-center ',
             'border-l border-theme',
             'inset-button-theme',
-        ]) @click="downloadCollection()">
-            <div @class([
-                'flex items-center',
-                'w-5 mx-auto',
-            ])>
+        ]) @click="downloadCollection()" {{ Popper::pop('Download Collection') }}>
+            <div @class(['flex items-center', 'w-5 mx-auto'])>
                 @fontawesome('download', 'light')
             </div>
         </div>

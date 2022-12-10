@@ -4,8 +4,64 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ee1636aa7b1616090850a7045d59aa1",
+    "content-hash": "5f7da3ec9ba184a70d0d352840afef06",
     "packages": [
+        {
+            "name": "andcarpi/laravel-popper",
+            "version": "0.9.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andcarpi/laravel-popper.git",
+                "reference": "fd01cbc60a62acd71ff4205ae7a03820b1a9951c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andcarpi/laravel-popper/zipball/fd01cbc60a62acd71ff4205ae7a03820b1a9951c",
+                "reference": "fd01cbc60a62acd71ff4205ae7a03820b1a9951c",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "andcarpi\\Popper\\PopperServiceProvider"
+                    ],
+                    "aliases": {
+                        "Popper": "andcarpi\\Popper\\Facades\\Popper"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "andcarpi\\Popper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anderson Carpi",
+                    "email": "kustelac@yahoo.com.br"
+                }
+            ],
+            "description": "A Easy to use Laravel Package, that allows you to generate tooltips in your blade views.",
+            "keywords": [
+                "blade",
+                "laravel",
+                "laravel-package",
+                "popper",
+                "tippy",
+                "tooltip",
+                "view"
+            ],
+            "support": {
+                "issues": "https://github.com/andcarpi/laravel-popper/issues",
+                "source": "https://github.com/andcarpi/laravel-popper/tree/master"
+            },
+            "time": "2019-09-26T02:06:56+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.10.2",
@@ -8026,5 +8082,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }

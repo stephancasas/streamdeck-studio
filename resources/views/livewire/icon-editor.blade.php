@@ -13,7 +13,7 @@
             'flex items-center ',
             'border-r border-theme',
             'inset-button-theme',
-        ]) @click="download()">
+        ]) @click="download()" {{ Popper::pop('Download PNG') }}>
             <div @class(['flex items-center', 'w-5 mx-auto'])>
                 @fontawesome('download', 'light')
             </div>
@@ -25,7 +25,7 @@
             'flex items-center ',
             'border-l border-theme',
             'inset-button-theme',
-        ]) wire:click="collectIcon">
+        ]) wire:click="collectIcon" {{ Popper::pop('Add to Collection') }}>
             <div @class(['flex items-center', 'w-6 mx-auto'])>
                 @fontawesome('rectangle-history-circle-plus', 'light')
             </div>

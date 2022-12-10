@@ -14,13 +14,14 @@
             'flex items-center',
             'border-l border-theme',
             'inset-button-theme',
-        ]) href="https://github.com/stephancasas/streamdeck-studio" target="_blank">
+        ]) href="https://github.com/stephancasas/streamdeck-studio" target="_blank"
+           {{ Popper::pop('Visit on GitHub') }}>
             <div @class(['flex items-center', 'w-5 mx-auto'])>
                 @fontawesome('github', 'brands')
             </div>
         </a>
 
-        
+
         <x-theme-control />
     </header>
 
