@@ -50,9 +50,11 @@
             <x-inset-square outer-class="z-20">
                 <div id="icon-canvas"
                      class="flex flex-col h-full w-full pt-4 rounded-[45px] shadow-md bg-{{ $this->canvasColor }}"
-                     x-bind:class="labelVisibility ? 'pt-4' : 'pt-6'">
+                     x-bind:class="labelVisibility ? 'pt-4' : 'pt-6'"
+                     x-bind:style="useAdvancedColorUi ? `background-color: ${advancedColor.canvas} !important;` : ''">
                     {{-- Glyph --}}
-                    <div class="h-0 flex-grow p-5 text-{{ $this->glyphColor }}">
+                    <div class="h-0 flex-grow p-5 text-{{ $this->glyphColor }}"
+                         x-bind:style="useAdvancedColorUi ? `color: ${advancedColor.glyph} !important;` : ''">
                         <x-inset-square outer-class="h-full w-full">
                             @isset($this->glyph)
                                 {!! $this->glyph->preview_svg !!}
@@ -65,7 +67,8 @@
                         'relative',
                     ]) x-show="labelVisibility"
                          x-bind:style="`font-family: '${labelTypeface || 'VT323'}';`">
-                        <span x-text="label" class="text-{{ $this->labelColor }}"></span>
+                        <span x-text="label" class="text-{{ $this->labelColor }}"
+                              x-bind:style="useAdvancedColorUi ? `color: ${advancedColor.label} !important;` : ''"></span>
                         <span x-show="!label">&nbsp;</span>
                     </div>
                     {{-- Spacer --}}
@@ -78,9 +81,11 @@
                 <x-inset-square>
                     <div id="icon-canvas-render" x-ref="iconCanvasForRender"
                          class="flex flex-col h-full w-full rounded-[45px] bg-{{ $this->canvasColor }}"
-                         x-bind:class="labelVisibility ? 'pt-4' : 'pt-6'">
+                         x-bind:class="labelVisibility ? 'pt-4' : 'pt-6'"
+                         x-bind:style="useAdvancedColorUi ? `background-color: ${advancedColor.canvas} !important;` : ''">
                         {{-- Glyph --}}
-                        <div class="h-0 flex-grow p-5 text-{{ $this->glyphColor }}">
+                        <div class="h-0 flex-grow p-5 text-{{ $this->glyphColor }}"
+                             x-bind:style="useAdvancedColorUi ? `color: ${advancedColor.glyph} !important;` : ''">
                             <x-inset-square outer-class="h-full w-full">
                                 @isset($this->glyph)
                                     {!! $this->glyph->preview_svg !!}
@@ -95,7 +100,8 @@
                             '-translate-y-8',
                         ]) x-show="labelVisibility"
                              x-bind:style="`font-family: '${labelTypeface || 'VT323'}';`">
-                            <span x-text="label" class="text-{{ $this->labelColor }}"></span>
+                            <span x-text="label" class="text-{{ $this->labelColor }}"
+                                  x-bind:style="useAdvancedColorUi ? `color: ${advancedColor.label} !important;` : ''"></span>
                             <span x-show="!label">&nbsp</span>
                         </div>
                         {{-- Spacer --}}
@@ -103,6 +109,15 @@
                     </div>
                 </x-inset-square>
             </div>
+
+            {{-- Mask for Alpha-enabled Colors --}}
+            <div class="absolute inset-0 z-10">
+                <x-inset-square outer-class="bg-gray-50 dark:bg-neutral-800 rounded-[45px]" />
+
+                {{-- uncomment to include alpha patter -- i don't like it --}}
+                {{-- <x-inset-square outer-class="bg-gray-50 dark:bg-neutral-800 rounded-[45px] alpha-checkers" /> --}}
+            </div>
+
         </div>
     </div>
 
@@ -140,8 +155,8 @@
                       wire:model="labelTypeface" />
         </div>
 
-        {{-- Colors --}}
-        <div class="grid grid-cols-3 gap-x-2 pt-2">
+        {{-- Tailwind Colors --}}
+        <div class="grid grid-cols-3 gap-x-2 pt-2" x-show="!useAdvancedColorUi">
             <div class="col-span-1">
                 <x-color-picker color-name-as-value label="Glyph" wire:model="glyphColor" />
             </div>
@@ -153,15 +168,47 @@
             </div>
         </div>
 
-        {{-- Automatic Schemes --}}
-        <div class="flex pt-2">
+        {{-- Advanced Colors --}}
+        <div class="grid grid-cols-3 gap-x-2 pt-2" x-show="useAdvancedColorUi">
+            <div class="col-span-1">
+                <x-ui-color-picker label="Glyph" id="advanced-color-glyph" hex-value="advancedColor.glyph" />
+            </div>
+            <div class="col-span-1">
+                <x-ui-color-picker label="Canvas" id="advanced-color-canvas" hex-value="advancedColor.canvas" />
+            </div>
+            <div class="col-span-1">
+                <x-ui-color-picker label="Label" id="advanced-color-label" hex-value="advancedColor.label" />
+            </div>
+        </div>
+
+        {{-- Color UI Control --}}
+        <div class="grid grid-cols-7 gap-x-2 pt-2">
+
+            {{-- Scheme --}}
             <x-select
-                      class="w-full"
+                      class="col-span-5"
                       label="Color Scheme"
                       placeholder="None"
                       :clearable="false"
                       :options="$this->getSchemeOptions()"
-                      wire:model.defer="colorScheme" />
+                      wire:model.defer="colorScheme"
+                      disabled="{{ $this->useAdvancedColorUi }}" />
+
+            {{-- Advanced Color --}}
+            <div class="relative col-span-2">
+                <div class="absolute bottom-0">
+                    <div class="relative">
+                        <div class="opacity-0 z-10">
+                            <x-input />
+                        </div>
+                        <div class="absolute bottom-0 inset-x-0 h-full flex items-center z-20">
+                            <div class="mx-auto">
+                                <x-toggle lg label="Advanced" wire:model="useAdvancedColorUi" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
