@@ -32,7 +32,7 @@ services:
       args:
         - WEB_ROOT=${WEB_ROOT:-/var/www/html}
         - SSH_USER=${SSH_USER}
-        - SSH_PASSWORD=${SSH_PASSWORD}
+        - SSH_PASS=${SSH_PASS}
     working_dir: ${WEB_ROOT:-/var/www/html}
     ports:
       - '${SSH_PORT:-2222}:22'
