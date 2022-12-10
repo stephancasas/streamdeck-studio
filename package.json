@@ -17,6 +17,7 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
+        "@simonwep/pickr": "^1.8.2",
         "html2canvas": "^1.4.1",
         "jszip": "^3.10.1"
     }
